@@ -7,7 +7,7 @@ import {
   RollTypeResult,
   RootType,
 } from "../../dice-roller-parser/src";
-import { DiceBoxResult, DieGroups, ParameterUpdateDieGroups } from "./types";
+import { DiceBoxResult, DieGroups } from "./types";
 
 let externalCount = 0;
 
@@ -246,15 +246,12 @@ class ParserInterface {
     return rerolls;
   }
 
-  //TODO: Typescript
   updateFloats(rolls: DiceBoxResult[]) {
     rolls.forEach((roll) => {
       this.rollsAsFloats.push((roll.value - 1) / roll.sides);
     });
   }
 
-  //TODO: Typescript
-  //finalResults: RollTypeResult
   parseFinalResults(rollResults: DiceBoxResult[] = []) {
     // do the final parse
     this.updateFloats(rollResults);
