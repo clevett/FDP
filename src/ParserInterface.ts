@@ -93,7 +93,7 @@ class ParserInterface {
 
   // make this static for use by other systems?
   recursiveSearch(
-    obj: RootType,
+    obj: { [key: string]: any },
     searchKey: string,
     results: unknown[] = [],
     callback?: Function
@@ -101,7 +101,6 @@ class ParserInterface {
     const r = results;
 
     Object.keys(obj).forEach((key) => {
-      //@ts-expect-error TS doesn't like using strings to find keys
       const value: any = obj[key];
 
       if (key === searchKey) {
