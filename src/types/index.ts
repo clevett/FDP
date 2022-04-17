@@ -23,6 +23,12 @@ export type ParseFinalResults = {
   value: number;
 };
 
+export type ParameterUpdateDieGroups = {
+  count: { value: number };
+  die: { value: number };
+  mods: unknown[];
+};
+
 /** Dicebox Types */
 type Sides = number;
 type Theme = string;
