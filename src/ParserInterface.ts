@@ -1,5 +1,9 @@
 import {
   DiceRoller,
+  FateExpr,
+  FullRoll,
+  NumberType,
+  RollExpr,
   RollTypeResult,
   RootType,
 } from "../../dice-roller-parser/src";
@@ -34,12 +38,28 @@ class ParserInterface {
     });
   }
 
-  updateDieGroups(obj: ParameterUpdateDieGroups) {
-    this.dieGroups.push({
-      qty: obj.count.value,
-      sides: obj.die.value,
-      mods: obj.mods,
-    });
+  updateDieGroups(obj: FullRoll) {
+    if (obj && obj.count && obj.die) {
+      const typeCheck = (v: RollExpr): v is NumberType => {
+        return v.type === "number" && typeof v.value === "number";
+      };
+
+      const fateTypeCheck = (v: RollExpr | FateExpr): v is FateExpr => {
+        return v.type === "fate";
+      };
+
+      if (
+        typeCheck(obj.count) &&
+        !fateTypeCheck(obj.die) &&
+        typeCheck(obj.die)
+      ) {
+        this.dieGroups.push({
+          qty: obj.count.value,
+          sides: obj.die.value,
+          mods: obj.mods,
+        });
+      }
+    }
   }
 
   parseNotation(notation: string) {
@@ -49,8 +69,7 @@ class ParserInterface {
     this.parsedNotation = this.rollParser?.parse(notation);
 
     // create a new object of just dice needed for rolling
-    const findDie = (obj: ParameterUpdateDieGroups) =>
-      this.updateDieGroups(obj);
+    const findDie = (obj: FullRoll) => this.updateDieGroups(obj);
 
     if (this.parsedNotation) {
       this.recursiveSearch(this.parsedNotation, "die", [], findDie);
