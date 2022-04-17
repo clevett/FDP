@@ -1,6 +1,5 @@
 import {
   DiceRoller,
-  RollBase,
   RollTypeResult,
   RootType,
 } from "../../dice-roller-parser/src";
@@ -15,7 +14,7 @@ class ParserInterface {
   rollParser?: DiceRoller;
   rollsAsFloats: number[] = [];
 
-  constructor(options = {}) {
+  constructor() {
     this.rollsAsFloats = [];
     this.dieGroups = [];
     this.parsedNotation = undefined;
@@ -74,8 +73,6 @@ class ParserInterface {
   }
 
   // make this static for use by other systems?
-  //TODO: Typescript
-  //obj: { rolls: DiceBoxResult[] }
   recursiveSearch(
     obj: RootType,
     searchKey: string,
